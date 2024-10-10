@@ -31,10 +31,10 @@ public class EmployeeService implements EmployeeServiceInterface {
     }
 
     @Override
-    public Employee add(String firstName, String lastName, int department, int salary) {
+    public Employee add(String firstName, String lastName, int department, int salary) throws EmployeeAlreadyAddedException {
         checkChar(firstName,lastName);
         Employee employee = new Employee(firstName, lastName, department, salary);
-        if (employeeList.contains(employee.fullName())) { //&& StringUtils.isAlpha(employee.fullName())
+        if (employeeList.contains(employee)) { //&& StringUtils.isAlpha(employee.fullName())
             throw new EmployeeAlreadyAddedException("данный человек уже есть в списке");
         } else if (employeeList.size() > INITIAL_CAPACITY) {
             throw new EmployeeStorageIsFullException("Слишком много сотрудников");
@@ -44,16 +44,16 @@ public class EmployeeService implements EmployeeServiceInterface {
     }
 
     @Override
-    public Employee find(String firstName, String lastName, int department, int salary) {
+    public Employee find(String firstName, String lastName, int department, int salary) throws EmployeeNotFoundException{
         Employee employee = new Employee(firstName, lastName, department, salary);
-        if (employeeList.contains(employee.fullName())) {
+        if (employeeList.contains(employee)) {
             return employee;
         } else {
             throw new EmployeeNotFoundException("Человек не найден");
         }
     }
     @Override
-    public Employee remove(String firstName, String lastName) {
+    public Employee remove(String firstName, String lastName) throws EmployeeNotFoundException,EmployeeStorageIsFullException {
         Employee employee = new Employee(firstName,  lastName, 0, 0);
         boolean removed = employeeList.removeIf(e -> e.getFirstname().equals(firstName) && e.getLastName().equals(lastName));
         if (removed) {

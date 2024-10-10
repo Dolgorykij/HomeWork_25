@@ -3,7 +3,6 @@ package HomeWork_25.HomeWork_25;
 import HomeWork_25.HomeWork_25.Exception.EmployeeAlreadyAddedException;
 import HomeWork_25.HomeWork_25.Exception.EmployeeNotFoundException;
 import HomeWork_25.HomeWork_25.Exception.EmployeeStorageIsFullException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -11,7 +10,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.springframework.aot.hint.TypeReference.listOf;
 
 
 public class EmployeeServiceTest {
@@ -36,13 +34,15 @@ public class EmployeeServiceTest {
 
     @Test
     public void testAddEmployeeAlreadyAddedException() {
-        var employee1 = employeeService.add("Гера","Герадотов",2,7500);
+        employeeService.add("Гера","Герадотов",2,7500);
         assertThrows(EmployeeAlreadyAddedException.class,() -> employeeService.add("Гера","Герадотов",2,7500));
     }
 
     @Test
     public void testAddEmployeeStorageIsFullException() {
-        var employee1 = employeeService.add("Гера","Герадотов",2,7500);
+        employeeService.add("Гера","Герадотов",2,7500);
+        employeeService.add("Гераa","Герадотовa",4,8500);
+        employeeService.add("Гераaa","Герадотовaa",4,8500);
         assertThrows(EmployeeStorageIsFullException.class,()->employeeService.add("Гер","Герадот",2,7500));
     }
 
@@ -59,7 +59,7 @@ public class EmployeeServiceTest {
     }
     @Test
     public void testFindException () {
-        assertThrows(EmployeeNotFoundException.class,()-> employeeService.add("Wer","Wersck",4,6));
+        assertThrows(EmployeeNotFoundException.class,()-> employeeService.find("Wer","Wersck",4,6));
     }
     @Test
     public void testRemove () {
